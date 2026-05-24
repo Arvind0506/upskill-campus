@@ -1,0 +1,253 @@
+[
+    {
+        "id": "55cc72ddcd9fae64",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0ce773bd86ce4916",
+        "type": "ui_gauge",
+        "z": "55cc72ddcd9fae64",
+        "name": "",
+        "group": "8f19c6da1050377f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "20",
+        "seg2": "30",
+        "diff": false,
+        "className": "",
+        "x": 590,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "1f58733194d29f6f",
+        "type": "function",
+        "z": "55cc72ddcd9fae64",
+        "name": "humidity function",
+        "func": "msg.payload = Math.floor(Math.random() * 100);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 320,
+        "wires": [
+            [
+                "16b575765d9572d8"
+            ]
+        ]
+    },
+    {
+        "id": "16b575765d9572d8",
+        "type": "ui_gauge",
+        "z": "55cc72ddcd9fae64",
+        "name": "",
+        "group": "8f19c6da1050377f",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 600,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "a77c89005a0a2589",
+        "type": "ui_chart",
+        "z": "55cc72ddcd9fae64",
+        "name": "",
+        "group": "8f19c6da1050377f",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 450,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "50f85f6388b1ec7e",
+        "type": "ui_text",
+        "z": "55cc72ddcd9fae64",
+        "group": "8f19c6da1050377f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 850,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f1e5e6bca3da8795",
+        "type": "function",
+        "z": "55cc72ddcd9fae64",
+        "name": "alert function ",
+        "func": "if(msg.payload > 35){\n    msg.payload = \"🔴 DANGER: HIGH TEMPERATURE!\";\n}\nelse if(msg.payload > 25){\n    msg.payload = \"🟡 WARNING: TEMPERATURE RISING\";\n}\nelse{\n    msg.payload = \"🟢 NORMAL\";\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "50f85f6388b1ec7e"
+            ]
+        ]
+    },
+    {
+        "id": "63a469397ade11d6",
+        "type": "mqtt in",
+        "z": "55cc72ddcd9fae64",
+        "name": "",
+        "topic": "room/temp",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "c87ab6701ee5d81f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 240,
+        "y": 240,
+        "wires": [
+            [
+                "0ce773bd86ce4916",
+                "a77c89005a0a2589",
+                "f1e5e6bca3da8795",
+                "1f58733194d29f6f"
+            ]
+        ]
+    },
+    {
+        "id": "8f19c6da1050377f",
+        "type": "ui_group",
+        "name": "Sensor data",
+        "tab": "856005034eb2b76f",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c87ab6701ee5d81f",
+        "type": "mqtt-broker",
+        "name": "HiveMQ",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "856005034eb2b76f",
+        "type": "ui_tab",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "f0b62c8c4b94c98c",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
